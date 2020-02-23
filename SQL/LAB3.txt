@@ -1,0 +1,141 @@
+1. Write a query which displays Staff Name, Department Code, Department Name,
+and Salary for all staff who earns more than 20000.
+
+Ans:  select s.staff_name,s.dept_code,s.staff_sal,d.dept_name from staff_master s,department_master d where s.dept_code=d.dept_code and s.staff_sal>20000;
+
+STAFF_NAME            DEPT_CODE  STAFF_SAL DEPT_NAME
+-------------------- ---------- ---------- ----------
+manoj                        10      23000 CSE
+venkat                       20      24000 ECE
+james                        20      30000 ECE
+james                        30      35000 MECH
+james                        40      38000 EEE
+a_b                          50      35000 H&S
+
+2. Display Staff Code, Staff Name, Department Name, and his manager’s number
+and name. Label the columns Staff#, Staff, Mgr#, Manager. 
+
+Ans:  SELECT S.STAFF_CODE AS STAFF# ,S.STAFF_NAME AS STAFF,D.DEPT_NAME,S.MGR_CODE AS MGR# FROM STAFF_MASTER S, DEPARTMENT_MASTER D WHERE S.DEPT_CODE=D.DEPT_CODE;
+
+    STAFF# STAFF                DEPT_NAME        MGR#
+---------- -------------------- ---------- ----------
+        10 manoj                CSE                10
+        20 venkat               ECE                20
+        30 james                ECE                20
+        40 james                MECH               30
+        50 james                EEE                40
+        60 a_b                  H&S                50
+
+3. Create a query that will display Student Code, Student Name, Book Code, and
+Book Name for all students whose expected book return date is today.
+
+Ans:   select s.student_code,s.student_name,b.book_code,b1.book_name from student_master s,book_transactions b,book_master b1 where s.student_code=b.student_code and b1.book_code=b.book_code and to_char(b.book_expected_return_date,'DD MM YYYY') like to_char(sysdate,'DD MM YYYY');
+
+STUDENT_CODE STUDENT_NAME          BOOK_CODE BOOK_NAME
+------------ -------------------- ---------- ----------
+          50 ram                          30 phy&chem
+
+4. Create a query that will display Staff Code, Staff Name, Department Name,
+Designation name, Book Code, Book Name, and Issue Date for only those staff
+who have taken any book in last 30 days. . If required, make changes to the table
+to create such a scenario.
+
+Ans:   select s.staff_code,s.staff_name,d.dept_name,dd.design_name,dd.design_code,b.book_name,b.book_code,bb.book_issue_date from staff_master s,department_master d,designation_master dd,book_master b,book_transactions bb where b.book_code=bb.book_code and s.staff_code=bb.staff_code and s.design_code=dd.design_code and s.dept_code=d.dept_code and sysdate-bb.book_issue_date<=30;
+
+STAFF_CODE STAFF_NAME           DEPT_NAME  DESIGN_NAM DESIGN_CODE BOOK_NAME
+---------- -------------------- ---------- ---------- ----------- ----------
+ BOOK_CODE BOOK_ISSU
+---------- ---------
+        60 a_b                  H&S        T&C                 50 maths
+        10 12-JAN-20
+
+5. Generate a report which contains the following information.
+Staff Code, Staff Name, Designation Name, Department, Book Code, Book
+Name,
+Author, Fine For the staff who has not returned the book. Fine will be calculated
+as Rs. 5 per day.
+Fine = 5 * (No. of days = Current Date – Expected return date). Include records in
+the table to suit this problem statement
+
+Ans:  select s.staff_code,s.staff_name,d.dept_name,dd.design_name,b.book_code,b.book_name,b.book_pub_author,(5*(trunc(sysdate)-(bb.book_expected_return_date))) as fine from staff_master s,department_master d,designation_master dd,book_master b,book_transactions bb where s.staff_code=bb.staff_code and s.dept_code=d.dept_code and s.design_code=dd.design_code and b.book_code=bb.book_code;
+
+STAFF_CODE STAFF_NAME           DEPT_NAME  DESIGN_NAM  BOOK_CODE BOOK_NAME
+---------- -------------------- ---------- ---------- ---------- ----------
+BOOK_PUB_A       FINE
+---------- ----------
+        10 manoj                sales      manager            10 maths
+ramanujan        1020
+
+        20 venkat               ECE        HR                 20 phy
+einstein          865
+
+        30 james                ECE        HR                 20 phy
+einstein          710
+
+
+STAFF_CODE STAFF_NAME           DEPT_NAME  DESIGN_NAM  BOOK_CODE BOOK_NAME
+---------- -------------------- ---------- ---------- ---------- ----------
+BOOK_PUB_A       FINE
+---------- ----------
+        40 james                MECH       sales              30 phy&chem
+james             560
+
+        50 james                EEE        support            30 phy&chem
+james              30
+
+        60 a_b                  H&S        T&C                10 maths
+ramanujan         -55
+
+
+6. List Staff Code, Staff Name, and Salary for those who are getting less than the
+average salary of organization.
+
+Ans:   select staff_code,staff_name,staff_sal from staff_master where staff_sal<(select avg(staff_sal) from staff_master);
+
+STAFF_CODE STAFF_NAME            STAFF_SAL
+---------- -------------------- ----------
+        10 manoj                     23000
+        20 venkat                    24000
+        30 james                     30000
+
+7. Display Author Name, Book Name for those authors who wrote more than one
+book.
+
+Ans:  select book_name,book_pub_author from book_master where book_pub_author in(select book_pub_author from book_master group by book_pub_author having count(distinct book_name)>1);
+
+BOOK_NAME  BOOK_PUB_A
+---------- ----------
+phy&chem   james
+biology    james
+
+8. Display Staff Code, Staff Name, and Department Name for those who have taken
+more than one book. 
+
+Ans:   select distinct s.staff_name,s.staff_code,d.dept_name from staff_master s,department_master d where s.dept_code=d.dept_code and s.staff_code in(select staff_code from book_transactions group by staff_code having count( book_code)>1);
+
+STAFF_NAME           STAFF_CODE DEPT_NAME
+-------------------- ---------- ----------
+manoj                        10 sales
+
+9. Display the Student Code, Student Name, and Department Name for that
+department in which there are maximum number of student studying.
+
+Ans:   select s.student_code, s.student_name,d.dept_name from student_master s, department_master d where s.dept_code=d.dept_code and s.dept_code in(select dept_code from student_master group by dept_code having count(student_code)>1);
+
+STUDENT_CODE STUDENT_NAME         DEPT_NAME
+------------ -------------------- ----------
+          20 shiva                ECE
+          30 robert               ECE
+
+10. Display Staff Code, Staff Name, Department Name, and Designation name for
+those who have joined in last 3 months.
+
+Ans:  select s.staff_code,s.staff_name,d.dept_name,dd.design_name from staff_master s,department_master d,designation_master dd where s.design_code=dd.design_code and s.dept_code=d.dept_code and sysdate-s.hiredate<=90;
+
+STAFF_CODE STAFF_NAME           DEPT_NAME  DESIGN_NAM
+---------- -------------------- ---------- ----------
+        70 john                 EEE        support
+
+11. Display the Manager Name and the total strength of his/her team.
+
+Ans:  

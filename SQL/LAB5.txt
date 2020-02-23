@@ -1,0 +1,167 @@
+1. Create Employee table with same structure as EMP table.
+
+Ans:  create table employee as select * from emp where 1=3;
+
+Table created.
+
+2. Write a query to populate Employee table using EMP table’s empno, ename, sal, deptno
+columns. 
+
+Ans:   insert into employee select * from emp;
+
+6 rows created.
+
+SQL> select * from employee;
+
+     EMPNO EMPNAME              JOB                         MGR HIREDATE
+---------- -------------------- -------------------- ---------- ---------
+    SALARY       COMM  DEPT_CODE
+---------- ---------- ----------
+        10 john                 manager                       2 12-JAN-00
+     20000        500         10
+
+        20 mike                 sales                         3 12-DEC-01
+     15000        500         20
+
+        30 albert               HR                            1 22-FEB-02
+     25000        500         20
+
+
+     EMPNO EMPNAME              JOB                         MGR HIREDATE
+---------- -------------------- -------------------- ---------- ---------
+    SALARY       COMM  DEPT_CODE
+---------- ---------- ----------
+        40 robert               marketing                     1 22-MAR-03
+     35000        400         30
+
+        50 rock                 training                      3 22-JAN-04
+     25000        400         40
+
+        60 richard              sales                           28-JAN-05
+     28000        400         50
+
+3. Write a query to change the job and deptno of employee whose empno is 7698 to the job
+and deptno of employee having empno 7788. 
+
+Ans:   update employee set job=(select job from employee where empno=10),dept_code=(select dept_code from employee where empno=10) where empno=20;
+
+1 row updated.
+
+SQL> select * from employee;
+
+     EMPNO EMPNAME              JOB                         MGR HIREDATE
+---------- -------------------- -------------------- ---------- ---------
+    SALARY       COMM  DEPT_CODE
+---------- ---------- ----------
+        10 john                 manager                       2 12-JAN-00
+     20000        500         10
+
+        20 mike                 manager                       3 12-DEC-01
+     15000        500         10
+
+        30 albert               HR                            1 22-FEB-02
+     25000        500         20
+
+
+     EMPNO EMPNAME              JOB                         MGR HIREDATE
+---------- -------------------- -------------------- ---------- ---------
+    SALARY       COMM  DEPT_CODE
+---------- ---------- ----------
+        40 robert               marketing                     1 22-MAR-03
+     35000        400         30
+
+        50 rock                 training                      3 22-JAN-04
+     25000        400         40
+
+        60 richard              sales                           28-JAN-05
+     28000        400         50
+
+4. Delete the details of department whose department name is ‘SALES’. 
+
+Ans:   delete from employee e where e.dept_code in(select d.dept_code from department_master d where d.dept_name='sales');
+
+5 rows deleted.
+
+SQL> select * from employee;
+
+     EMPNO EMPNAME              JOB                         MGR HIREDATE
+---------- -------------------- -------------------- ---------- ---------
+    SALARY       COMM  DEPT_CODE
+---------- ---------- ----------
+        30 albert               HR                            1 22-FEB-02
+     25000        500         20
+
+        40 robert               marketing                     1 22-MAR-03
+     35000        400         30
+
+        50 rock                 training                      3 22-JAN-04
+     25000        400         40
+
+
+     EMPNO EMPNAME              JOB                         MGR HIREDATE
+---------- -------------------- -------------------- ---------- ---------
+    SALARY       COMM  DEPT_CODE
+---------- ---------- ----------
+        60 richard              sales                           28-JAN-05
+     28000        400         50
+
+      1002 Becker               Manager                    1000 04-NOV-92
+      2800          4         20
+
+      1003 Bill                 Clerk                      1002 04-NOV-92
+      3000          0         20
+
+5. Write a query to change the deptno of employee with empno 7788 to that of employee
+having empno 7698. 
+
+Ans:  update employee set dept_code=(select dept_code from employee where empno=20) where empno=10;
+
+1 row updated.
+
+SQL> select * from employee;
+
+     EMPNO EMPNAME              JOB                         MGR HIREDATE
+---------- -------------------- -------------------- ---------- ---------
+    SALARY       COMM  DEPT_CODE
+---------- ---------- ----------
+        10 john                 manager                       2 12-JAN-00
+     20000        500         10
+
+        20 mike                 manager                       3 12-DEC-01
+     15000        500         10
+
+        30 albert               HR                            1 22-FEB-02
+     25000        500         20
+
+
+     EMPNO EMPNAME              JOB                         MGR HIREDATE
+---------- -------------------- -------------------- ---------- ---------
+    SALARY       COMM  DEPT_CODE
+---------- ---------- ----------
+        40 robert               marketing                     1 22-MAR-03
+     35000        400         30
+
+        50 rock                 training                      3 22-JAN-04
+     25000        400         40
+
+        60 richard              sales                           28-JAN-05
+     28000        400         50
+
+6. Insert the following rows to the Employee table through parameter substitution.
+• 1000,Allen, Clerk,1001,12-jan-01, 3000, 2,10
+• 1001,George, analyst, null, 08 Sep 92, 5000,0, 10
+• 1002, Becker, Manager, 1000, 4 Nov 92, 2800,4, 20
+• 1003, 'Bill', Clerk, 1002, 4 Nov 92,3000, 0, 20
+
+Ans:   insert into employee(empno,empname,job,mgr,hiredate,salary,comm,dept_code) values(1000,'Allen','Clerk',1001,'12-jan-01', 3000, 2,10);
+
+1 row created.
+       insert into employee(empno,empname,job,mgr,hiredate,salary,comm,dept_code) values(1001,'George','analyst',null,'08 Sep 92',5000,0,10);
+
+1 row created.
+       insert into employee(empno,empname,job,mgr,hiredate,salary,comm,dept_code) values(1002,'Becker','Manager',1000,'4 Nov 92',2800,4,20);
+
+1 row created.
+       insert into employee(empno,empname,job,mgr,hiredate,salary,comm,dept_code) values(1003,'Bill','Clerk',1002,'4 Nov 92',3000,0,20);
+
+1 row created.

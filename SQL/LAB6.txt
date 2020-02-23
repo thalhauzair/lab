@@ -1,0 +1,78 @@
+1. Insert rows with the following data into the Customer table. 6000, John, #115
+Chicago, #115 Chicago, M, 25, 7878776, 10000
+• 6001, Jack, #116 France, #116 France, M, 25, 434524, 20000
+• 6002, James, #114 New York, #114 New York, M, 45, 431525, 15000.50
+Use parameter substitution.
+
+Ans:  create table customer(cust_id number(10),cust_name varchar2(20),temp_addr char(20),permanent_addr char(20),gender varchar2(1),age number(10),score1 number(10),score2 number(10));
+
+Table created.
+
+  insert into customer(cust_id,cust_name,temp_addr,permanent_addr,gender,age,score1,score2) values( 6000,'John','#115Chicago','#115Chicago','M',25,7878776,10000.00);
+
+1 row created.
+
+  insert into customer(cust_id,cust_name,temp_addr,permanent_addr,gender,age,score1,score2) values( 6001,'Jack','#116France','#116France','M',25,434524,20000.00);
+
+1 row created.
+  insert into customer(cust_id,cust_name,temp_addr,permanent_addr,gender,age,score1,score2) values(6002,'James','#114NewYork','#114NewYork','M',45,431525,15000.50);
+
+1 row created.
+
+2. Create a Savepoint named ‘SP1’ after third record in the Customer table .
+
+Ans:  savepoint sp1;
+
+Savepoint created.
+
+3. Insert the below row in the Customer table.
+6003, John, #114 Chicago, #114 Chicago, M, 45, 439525, 19000.60
+
+Ans:  insert into customer(cust_id,cust_name,temp_addr,permanent_addr,gender,age,score1,score2) values(6003,'John','#114Chicago','#114Chicago','M',45,439525,19000.60);
+
+  select * from customer;
+
+   CUST_ID CUST_NAME            TEMP_ADDR            PERMANENT_ADDR       G
+---------- -------------------- -------------------- -------------------- -
+       AGE     SCORE1     SCORE2
+---------- ---------- ----------
+      6000 John                 #115Chicago          #115Chicago          M
+        25    7878776      10000
+
+      6001 Jack                 #116France           #116France           M
+        25     434524      20000
+
+      6002 James                #114NewYork          #114NewYork          M
+        45     431525    15000.5
+
+
+   CUST_ID CUST_NAME            TEMP_ADDR            PERMANENT_ADDR       G
+---------- -------------------- -------------------- -------------------- -
+       AGE     SCORE1     SCORE2
+---------- ---------- ----------
+      6003 John                 #114Chicago          #114Chicago          M
+        45     439525    19000.6
+
+
+4. Execute rollback statement in such a way that whatever manipulations done
+before Savepoint sp1 are permanently implemented, and the ones after
+Savepoint SP1 are not stored as a part of the Customer table. 
+
+Ans:  rollback to sp1;
+
+rollback complete
+  
+   select * from customer;
+
+   CUST_ID CUST_NAME            TEMP_ADDR            PERMANENT_ADDR       G
+---------- -------------------- -------------------- -------------------- -
+       AGE     SCORE1     SCORE2
+---------- ---------- ----------
+      6000 John                 #115Chicago          #115Chicago          M
+        25    7878776      10000
+
+      6001 Jack                 #116France           #116France           M
+        25     434524      20000
+
+      6002 James                #114NewYork          #114NewYork          M
+        45     431525    15000.5

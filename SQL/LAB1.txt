@@ -1,0 +1,53 @@
+1.1
+====
+1.  List the Name and Designation code of the staff who have joined before Jan 2003
+and whose salary range is between 12000 and 25000. Display the columns with
+user defined Column headers. 
+
+Ans:  select s.staff_name,s.design_code from staff_master s where s.staff_sal>12000 and s.staff_sal<25000 and s.hiredate<'01-jan-2003';
+
+STAFF_NAME           DESIGN_CODE
+-------------------- -----------
+manoj                         10
+venkat                        20
+
+2.   List the staff code, name, and department number of the staff who have
+experience of 18 or more years and sort them based on their experience. 
+
+Ans:  select s.staff_code,s.staff_name,s.dept_code from staff_master s where ceil(months_between(sysdate,hiredate)/12)>18;
+
+STAFF_CODE STAFF_NAME            DEPT_CODE
+---------- -------------------- ----------
+        10 manoj                        10
+        20 venkat                       20
+        30 james                        20
+
+3.   Display the staff details who do not have manager.
+
+Ans:  select * from emp where mgr is null;
+
+      EMPNO EMPNAME              JOB                         MGR HIREDATE
+---------- -------------------- -------------------- ---------- ---------
+    SALARY       COMM  DEPT_CODE
+---------- ---------- ----------
+        60 richard              sales                           28-JAN-05
+     28000        400         50
+
+
+4.  Display the Book details that were published during the period of 2001 to 2004.
+Also display book details with Book name having the character ‘&’ anywhere.
+
+Ans:  select * from book_master where book_pub_year between 2001 and 2004 and book_name like'%&%';
+
+BOOK_CODE BOOK_NAME  BOOK_PUB_YEAR BOOK_PUB_A
+---------- ---------- ------------- ----------
+        30 phy&chem            2002 james
+     
+
+5.  List the names of the staff having ‘_’ character in their name. 
+
+Ans:  select staff_name from staff_master where staff_name like '%\_%' escape '\';
+
+STAFF_NAME
+----------
+a_b
